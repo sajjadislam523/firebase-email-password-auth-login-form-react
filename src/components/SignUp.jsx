@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+} from "firebase/auth";
 import auth from "../firebase/firebase.conf";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
@@ -44,6 +47,11 @@ const SignUp = () => {
                 // Add additional user data if needed
                 // e.g. result.user.updateProfile({ displayName: 'John Doe' });
                 setSuccess(true);
+
+                // verification of user
+                sendEmailVerification(auth.currentUser).then(() => {
+                    console.log("Email verification sent");
+                });
             })
             .catch((err) => {
                 console.error(err);
@@ -120,6 +128,13 @@ const SignUp = () => {
                         <div className="mt-6 form-control">
                             <button className="btn btn-primary">SignUp</button>
                         </div>
+
+                        <p>
+                            Already have an account?{" "}
+                            <Link className="underline" to="/login">
+                                Login
+                            </Link>
+                        </p>
                     </form>
                     {error && (
                         <div className="p-2 m-4 text-xs font-semibold text-red-800 bg-red-100 border border-red-600 rounded-md">
