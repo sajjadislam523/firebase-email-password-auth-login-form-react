@@ -3,24 +3,26 @@ import auth from "../firebase/firebase.conf";
 import { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { RiEyeCloseFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
     const [showPass, setShowPass] = useState(false);
 
-    // const handleShowPassword = (e) => {
-    //     e.preventDefault();
-    //     setShowPass(!showPass);
-    // };
-
     const handleSignup = (e) => {
         e.preventDefault();
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const terms = e.target.terms.checked;
 
         setError("");
         setSuccess(false);
+
+        if (!terms) {
+            setError("Please agree to the terms and conditions");
+            return;
+        }
 
         if (password.length < 6) {
             setError("Password should be at least 6 characters long");
@@ -68,7 +70,7 @@ const SignUp = () => {
                             </label>
                             <input
                                 type="email"
-                                placeholder="email"
+                                placeholder="Email"
                                 className="input input-bordered"
                                 name="email"
                                 required
@@ -80,7 +82,7 @@ const SignUp = () => {
                             </label>
                             <input
                                 type={showPass ? "text" : "password"}
-                                placeholder="password"
+                                placeholder="Password"
                                 className="input input-bordered"
                                 name="password"
                                 required
@@ -93,24 +95,40 @@ const SignUp = () => {
                             </button>
 
                             <label className="label">
-                                <a
-                                    href="#"
+                                <Link
+                                    to="#"
                                     className="label-text-alt link link-hover"
                                 >
                                     Forgot password?
-                                </a>
+                                </Link>
                             </label>
                         </div>
+
+                        <div className="form-control">
+                            <label className="justify-start gap-4 cursor-pointer label">
+                                <input
+                                    type="checkbox"
+                                    name="terms"
+                                    className="checkbox"
+                                />
+                                <span className="label-text">
+                                    Accept our terms and conditions.
+                                </span>
+                            </label>
+                        </div>
+
                         <div className="mt-6 form-control">
                             <button className="btn btn-primary">SignUp</button>
                         </div>
                     </form>
                     {error && (
-                        <div className="mt-4 text-sm text-red-600">{error}</div>
+                        <div className="p-2 m-4 text-xs font-semibold text-red-800 bg-red-100 border border-red-600 rounded-md">
+                            {error}
+                        </div>
                     )}
 
                     {success && (
-                        <div className="mt-4 text-sm text-green-600">
+                        <div className="p-2 m-4 text-xs font-semibold text-green-800 bg-green-100 border border-green-600 rounded-md">
                             Sign up successful! Please check your email to
                             verify your account.
                         </div>
